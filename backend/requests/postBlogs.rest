@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtwYWlsZGhpbGxvbjQ0IiwiaWQiOiI2N2I1YzQ5NmQzYzYxOWJiMjZmMThjYzkiLCJpYXQiOjE3Mzk5ODU0ODV9.6XHMqHqw71SPd8lp4ZRKEyy_fwsY0MU2BVoVpIEVVxs
+
+{
+    "title": "anything anything", 
+    "author": "Kiran",
+    "url": "yahoo.com",
+    "likes": 10
+}

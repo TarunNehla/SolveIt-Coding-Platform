@@ -1,0 +1,9 @@
+PATCH http://localhost:3003/api/blogs/67a1ea469df88afbc6fba31d
+Content-Type: application/json
+
+{
+    "title":"Tractor", 
+    "author":"Kiran",
+    "url":"yahoo.com",
+    "likes":10
+}
