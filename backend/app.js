@@ -7,6 +7,7 @@ const authRouter = require('./routes/authrouter')
 const cors = require('cors');
 const UserRouter = require('./controllers/users');
 const middleware = require('./utils/middleware');
+const problemRouter = require('./routes/problemRouter');
 
 app.use(cors());
 app.use(express.json());
@@ -17,6 +18,7 @@ app.get('/', (req,res) => {
 app.use(middleware.requestLogger)
 app.use('/auth', authRouter )
 app.use('/api/users', UserRouter)
+app.use('/api/problems', problemRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 

@@ -6,6 +6,7 @@ import PageNotFound from './utils/PageNotFound';
 import { useState } from 'react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import RefrshHandler from './utils/RefreshHandler';
+import ProblemPage from './components/ProblemPage';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/login" element={<GoogleAuthWrapper />} /> 
         <Route path="/" element={<Navigate to="/login"/>} /> 
         <Route path='/dashboard' element={<PrivateRoute element={<Dashboard/>}/>}/>
+        <Route path="/problem/:problemId" element={<ProblemPage />} />
         <Route path="*" element={<PageNotFound />} /> 
       </Routes>
     </BrowserRouter>
