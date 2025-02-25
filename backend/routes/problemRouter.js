@@ -3,6 +3,8 @@ const ProblemModel = require('../models/problemModel');
 const UserModel = require('../models/userModel');
 const executeFile = require('../utils/execute');
 const generateCodeFile = require('../utils/generateFile');
+const inputFileGenerate = require('../utils/inputFileGenerator');
+const run = require('../utils/run');
 const problemRouter = require('express').Router();
 
 problemRouter.get('/', async (req,res) => {
@@ -22,6 +24,27 @@ problemRouter.get('/:id', async (req, res) => {
     }
 });
 
+problemRouter.post('/run/:id', authenticate, async (req, res) => {
+    try {
+        const { input, code, language } = req.body;
+        const id = req.params.id;
+        const filePath = await generateCodeFile(language, code);
+        await inputFileGenerate(id, input);
+        const response = await run(filePath.path, id, language); 
+
+        if (response.success) {
+            res.status(200).json({ success: true, message: 'Execution successful', output: response.output });
+        } else {
+            res.status(200).json({ success: false, message: 'Execution failed', errorType: response.type, output: response.message });
+        }
+    } catch (error) {
+        console.error('Error running code:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+
+
 problemRouter.post('/:id', authenticate, async (req,res) => {
     try {
         const {code, language} = req.body;
@@ -33,17 +56,15 @@ problemRouter.post('/:id', authenticate, async (req,res) => {
         console.log('output', output);
         
         if (output.success) {
-            // Update the UserModel with the new problem ID
-            await UserModel.findByIdAndUpdate(userId, { $addToSet: { solvedProblems: id } });
-
-            // Update the ProblemModel with the user ID
-            await ProblemModel.findByIdAndUpdate(id, { $addToSet: { solvedBy: userId } });
+            await UserModel.findByIdAndUpdate(userId, { $addToSet: { problems: id } });
+            await ProblemModel.findByIdAndUpdate(id, { $addToSet: { user: userId } });
 
             res.status(200).json({ success: true, message: 'Problem solved successfully', output });
         } else {
-            res.status(400).json({ success: false, message: 'Problem not solved', output });
+            res.status(200).json({ success: false, message: 'Problem not solved', errorType: output.type, output });
         }
     } catch (error) {
+        console.error('Error solving problem:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 })

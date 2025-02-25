@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import RefrshHandler from './utils/RefreshHandler';
 import ProblemPage from './components/ProblemPage';
+import Profile from './components/Profile';
+import Leaderboard from './components/Leaderboard';
 
 function App() {
 
@@ -30,6 +32,8 @@ function App() {
         <Route path="/" element={<Navigate to="/login"/>} /> 
         <Route path='/dashboard' element={<PrivateRoute element={<Dashboard/>}/>}/>
         <Route path="/problem/:problemId" element={<ProblemPage />} />
+        <Route path='/profile/:userId' element={<Profile/>}/>
+        <Route path='/leaderboard' element={<Leaderboard/>}/>
         <Route path="*" element={<PageNotFound />} /> 
       </Routes>
     </BrowserRouter>

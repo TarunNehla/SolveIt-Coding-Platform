@@ -64,15 +64,20 @@ const executeFile = async (filePath, problemId, language) => {
 
         if (compileCommand) {
             console.log(`Compiling file inside Docker container with command: ${compileCommand}`);
-            await execPromise(compileCommand);
+            try {
+                await execPromise(compileCommand);
+            } catch (error) {
+                console.error('Compilation error:', error.message);
+                return { success: false, type: 'compilation', message: error.message };
+            }
         }
 
         console.log(`Running file inside Docker container with command: ${runCommand}`);
         return new Promise((resolve, reject) => {
             exec(runCommand, (error, stdout, stderr) => {
                 if (error) {
-                    console.error('Execution error:', error.message);
-                    reject({ success: false, message: error.message });
+                    console.error('Runtime error:', error.message);
+                    reject({ success: false, type: 'runtime', message: error.message });
                     return;
                 }
 
@@ -91,12 +96,12 @@ const executeFile = async (filePath, problemId, language) => {
                             resolve({ success: true, message: 'Output matches expected output.' });
                         } else {
                             console.log('Output does not match expected output.');
-                            reject({ success: false, message: 'Output does not match expected output.' });
+                            resolve({ success: false, type: 'output', message: 'Output does not match expected output.' });
                         }
                     })
                     .catch((err) => {
                         console.error('Error reading expected output file:', err);
-                        reject({ success: false, message: 'Error reading expected output file.' });
+                        reject({ success: false, type: 'file', message: 'Error reading expected output file.' });
                     });
             });
         });

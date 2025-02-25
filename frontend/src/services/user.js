@@ -13,4 +13,9 @@ export const register = async (userInfo) => {
     return response.data;
 }
 
+export const allUsers = async () => {
+    const response = await axios.get(baseUrl+'/api/users');
+    return response.data;
+}
+
 // export default { login, register }

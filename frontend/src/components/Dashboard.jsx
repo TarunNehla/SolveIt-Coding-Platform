@@ -1,80 +1,76 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { allProblems } from '../services/problem';
-
+import Navbar from './Navbar';
 
 function Dashboard() {
   const navigate = useNavigate();
   const [problems, setProblems] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
-  
-  useEffect(()=> {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
     const data = localStorage.getItem('user-info');
     const userData = JSON.parse(data);
+    console.log('userData', userData);
     setUserInfo(userData);
-  }, [])
+  }, []);
 
   useEffect(() => {
     const fetchProblems = async () => {
       try {
         const response = await allProblems();
-        console.log('all problems', response )
+        console.log('all problems', response);
         setProblems(response || []);
       } catch (error) {
         console.error('Error fetching problems:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProblems();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user-info');
-    navigate('/login');
-  }
-
-  const handleRowClick = (problemId) => {
-    navigate(`/problem/${problemId}`);
-  };
 
   return (
     <div>
-      <div className="navbar bg-base-100 w-full justify-between ">
-        <a className="btn btn-ghost text-xl">Solve It</a>
-        <div className="navbar-end m-3">
-          <button className='btn' onClick={handleLogout}>Logout</button>
-        </div>
-      </div>
-      <h1>Welcome {userInfo?.name}</h1>
-      <h2>Email : {userInfo?.email}</h2>
-      {/* <img src={userInfo?.image}/> */}
-      <button onClick={handleLogout}>Logout</button>
-
+      <Navbar />
       <div className="overflow-x-auto">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Difficulty</th>
-              <th>Solved By</th>
-            </tr>
-          </thead>
-          <tbody>
-            {problems.map((problem, index) => (
-              <tr className='hover' key={problem.id} onClick={() => navigate(`/problem/${problem.id}`)}>
-                <th>{index + 1}</th>
-                <td>{problem.name}</td>
-                <td>{problem.difficulty}</td>
-                <td>{problem.user.length}</td>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <>
+              <span className="loading loading-spinner loading-xs"></span>
+              <span className="loading loading-spinner loading-sm"></span>
+              <span className="loading loading-spinner loading-md"></span>
+              <span className="loading loading-spinner loading-lg"></span>
+            </>
+          </div>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Difficulty</th>
+                <th>Solved By</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {problems.map((problem, index) => (
+                <tr className="hover" key={problem.id} onClick={() => navigate(`/problem/${problem.id}`)}>
+                  <th>{index + 1}</th>
+                  <td>{problem.name}</td>
+                  <td>{problem.difficulty}</td>
+                  <td>{problem.user.length}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

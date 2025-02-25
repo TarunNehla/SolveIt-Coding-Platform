@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/problems/run/67b9ab775cf0177038688b3e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2I5ZWM1NTZlMTUyOTliYmNjZjE0MmUiLCJlbWFpbCI6InRhcnVuZGgzMEBnbWFpbC5jb20iLCJpYXQiOjE3NDAyODU4NzQsImV4cCI6MTc0MDMyOTA3NH0.Ig63PLmkjRD8ozXP9lggB7l8gPghq8S81II_7PJfAec
+Content-Type: application/json
+
+{
+    "input": "1",
+  "code": "#include <bits/stdc++.h>\nusing namespace std;\n#define int long long\n#define endl \"\\n\"\n\nvoid solve()\n{\n    int n; cin>>n; \n   int rem = n%3;\n\n    if(rem==0){\n        cout<<n/3<<endl;\n    }\n    else if(n==1){\n        cout<<2<<endl;\n    }\n    else{\n        cout<<(n/3)+1<<endl;\n    }\n    \n    return;\n}\n\nsigned main()\n{\n    ios_base::sync_with_stdio(0);\n    cin.tie(0);\n    cout.tie(0);\n    int t; cin>>t;\n    while (t--)\n    {\n        solve();\n    }\n    return 0;\n}\n",
+  "language": "cpp"
+}
