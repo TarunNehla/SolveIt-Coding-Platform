@@ -58,7 +58,11 @@ function Dashboard() {
             </thead>
             <tbody>
               {problems.map((problem, index) => (
-                <tr className="hover" key={problem.id} onClick={() => navigate(`/problem/${problem.id}`)}>
+                <tr 
+                  className={`hover ${userInfo?.problems?.includes(problem.id) ? 'bg-green-100' : ''}`}
+                  key={problem.id} 
+                  onClick={() => navigate(`/problem/${problem.id}`)}
+                >
                   <th>{index + 1}</th>
                   <td>{problem.name}</td>
                   <td>{problem.difficulty}</td>

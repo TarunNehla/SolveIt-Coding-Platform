@@ -26,6 +26,7 @@ problemRouter.get('/:id', async (req, res) => {
 
 problemRouter.post('/run/:id', authenticate, async (req, res) => {
     try {
+        console.log('this is executing');
         const { input, code, language } = req.body;
         const id = req.params.id;
         const filePath = await generateCodeFile(language, code);

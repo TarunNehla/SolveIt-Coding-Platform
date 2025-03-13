@@ -12,9 +12,13 @@ function LoginForm() {
     e.preventDefault();
     try {
       const response = await login({ email, password });
+
+      const {token, user} = response;
+
+      const obj = {token, ...user};
       
-      console.log('response.data in login form file', response)
-      localStorage.setItem('user-info', JSON.stringify(response));
+      // console.log('response.data in login form file', obj)
+      localStorage.setItem('user-info', JSON.stringify(obj));
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');

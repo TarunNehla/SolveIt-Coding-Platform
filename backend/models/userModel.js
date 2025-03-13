@@ -5,12 +5,15 @@ const UserSchema = new mongoose.Schema({
     email: String,
     passwordHash: String,
     picture: String,
-    problems: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Problem'
-        }
-    ]
+    problems: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Problem'
+            }
+        ],
+        default: []
+    }
 });
 
 UserSchema.set('toJSON', {

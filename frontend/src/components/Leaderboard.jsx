@@ -12,7 +12,6 @@ const Leaderboard = () => {
     const fetchUsers = async () => {
       try {
         const response = await allUsers();
-        // Sort users based on the number of problems solved in descending order
         const sortedUsers = response.sort((a, b) => b.problems.length - a.problems.length);
         setUsers(sortedUsers);
       } catch (error) {

@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const authenticate = async (req, res, next) => {
   try {
+    
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -13,9 +14,9 @@ const authenticate = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+    console.log('decoded', decoded);
     // Finding user
-    const user = await UserModel.findById(decoded._id);
+    const user = await UserModel.findById(decoded.id);
     if (!user) {
       return res.status(401).json({ message: 'Unauthorized: Invalid token' });
     }

@@ -23,7 +23,8 @@ const GoogleLogin = async (req,res) => {
             })
         }
         const {_id} = user;
-        const token = jwt.sign({_id,email},
+        const id = _id;
+        const token = jwt.sign({id,email},
             process.env.JWT_SECRET,
             {
                 expiresIn : process.env.JWT_TIMEOUT

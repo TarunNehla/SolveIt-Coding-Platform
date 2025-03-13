@@ -4,7 +4,7 @@ const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 8080;
 require('./models/dbConnection');
-const authRouter = require('./routes/authrouter')
+const authRouter = require('./routes/authRouter')
 const cors = require('cors');
 const UserRouter = require('./controllers/users');
 const middleware = require('./utils/middleware');

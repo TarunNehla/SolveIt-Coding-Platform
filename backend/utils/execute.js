@@ -91,7 +91,18 @@ const executeFile = async (filePath, problemId, language) => {
                     .then((expectedOutput) => {
                         console.log('Expected output:', expectedOutput);
                         console.log('Comparing output...');
-                        if (stdout.trim() === expectedOutput.trim()) {
+                        console.log('Trimmed Execution output:', JSON.stringify(stdout.trim()));
+                        console.log('Trimmed Expected output:', JSON.stringify(expectedOutput.trim()));
+
+                        // Normalize whitespace for comparison
+                        const normalize = (str) => str.replace(/\s+/g, ' ').trim();
+                        const normalizedStdout = normalize(stdout);
+                        const normalizedExpectedOutput = normalize(expectedOutput);
+
+                        console.log('Normalized Execution output:', JSON.stringify(normalizedStdout));
+                        console.log('Normalized Expected output:', JSON.stringify(normalizedExpectedOutput));
+
+                        if (normalizedStdout === normalizedExpectedOutput) {
                             console.log('Output matches expected output.');
                             resolve({ success: true, message: 'Output matches expected output.' });
                         } else {
